@@ -17,6 +17,12 @@ server.get('/', (req, res) => {
   res.send('Hello from EC BE');
 });
 
+server.post('/drawings', (req, res) => {
+  let image_data = req.headers.JSON_img_data;
+  console.log(`here is your data : ${image_data}`)
+  res.send(`here is your data : ${image_data}`);
+})
+
 
 
 // watch for connections on port 5000
