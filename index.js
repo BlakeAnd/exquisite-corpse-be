@@ -18,7 +18,7 @@ server.get('/', (req, res) => {
 });
 
 server.post('/drawings', (req, res) => {
-  let image_data = req.headers.JSON_img_data;
+  let image_data = req.body.JSON_img_data;
   console.log(`here is your data : ${image_data}`)
   res.send(`here is your data : ${image_data}`);
 })
