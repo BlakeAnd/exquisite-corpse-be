@@ -19,13 +19,14 @@ server.get('/', (req, res) => {
 });
 
 server.post('/drawings/:id', (req, res) => {
-  let id = req.params;
-  let image_data = req.body;
-  console.log("headers: ", req.headers);
-  console.log("body: ", image_data);
-  console.log("params: ", id);
+  let id = req.body;
+  let image_data = req.body.data;
+  let canvas = req.body.canvas;
+  console.log("id ", id);
+  console.log("img data ", image_data);
+  console.log("canvas ", canvas);
   // console.log(`image_data: ${image_data}`);
-  // res.send(req.body.data.config);
+  res.send(req.body.data);
 })
 
 
