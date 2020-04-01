@@ -6,6 +6,7 @@ require("dotenv").config();
 const server = express(); // creates the server
 
 server.use(cors());
+server.use(express.json());
 
 server.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "http://localhost:3000", "https://drawexquisitecorpse.netlify.com");
@@ -17,10 +18,14 @@ server.get('/', (req, res) => {
   res.send('Hello from EC BE');
 });
 
-server.post('/drawings', (req, res) => {
-  let image_data = req.body.JSON_img_data;
-  console.log(`here is your data : ${image_data}`)
-  res.send(`here is your data : ${image_data}`);
+server.post('/drawings/:id', (req, res) => {
+  let id = req.params;
+  let image_data = req.body;
+  console.log("headers: ", req.headers);
+  console.log("body: ", image_data);
+  console.log("params: ", id);
+  // console.log(`image_data: ${image_data}`);
+  // res.send(req.body.data.config);
 })
 
 
