@@ -1,11 +1,13 @@
 const express = require('express'); // import the express package
 const cors = require('cors');
+// const bodyParser = require('body-parser')
 require("dotenv").config();
 
 
 const server = express(); // creates the server
 
 server.use(cors());
+// server.use(bodyParser());
 server.use(express.json());
 
 server.use((req, res, next) => {
@@ -18,7 +20,7 @@ server.get('/', (req, res) => {
   res.send('Hello from EC BE');
 });
 
-server.post('/drawings/:id', (req, res) => {
+server.post('/drawings', (req, res) => {
   let id = req.body;
   let image_data = req.body.data;
   let canvas = req.body.canvas;
