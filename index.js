@@ -1,12 +1,16 @@
 const express = require('express'); // import the express package
+const helmet = require('helmet');
 const cors = require('cors');
 // const bodyParser = require('body-parser')
 require("dotenv").config();
 
 
+
+
 const server = express(); // creates the server
 
 server.use(cors());
+server.use(helmet());
 // server.use(bodyParser());
 server.use(express.json({limit: '20MB'}));
 
