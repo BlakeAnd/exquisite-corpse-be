@@ -51,8 +51,8 @@ server.post('/drawings', (req, res) => {
   }
   console.log("\n")
   // console.log("body", req.body); 
-  console.log("draw obj 0", typeof(drawings_obj.id[0])); 
-  console.log("draw obj 1", typeof(drawings_obj.id[1])); 
+  // console.log("draw obj 0", typeof(drawings_obj.id[0])); 
+  // console.log("draw obj 1", typeof(drawings_obj.id[1])); 
   console.log("id ", id);
   // console.log("obj.id", drawings_obj.id);
   // console.log("img data len", image_data);
