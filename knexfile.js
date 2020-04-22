@@ -13,7 +13,6 @@ module.exports = {
       directory: './database/migrations'
     }
   },
-
   // staging: {
   //   client: 'postgresql',
   //   connection: {
