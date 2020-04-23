@@ -6,24 +6,13 @@ exports.up = function(knex) {
       .notNullable();
     tbl.int('sub_canvas_num')
       .notNullable();
-
-
-
-  // tbl.increments();
-  // tbl.integer('artist_id')
-  // .unsigned()
-  // .notNullable()
-  // .references('id')
-  // .inTable('musicians');
-  // tbl.integer('user_id')
-  // .unsigned()
-  // .notNullable()
-  // .references('id')
-  // .inTable('users');  
+    tbl.json('image_data')
+      .notNullable(); 
+    tbl.datetime('upload_time', { precision: 4 })
+      .notNullable();
 }); 
 };
 
 exports.down = function(knex) {
-  return knex.schema.dropTableIfExists("favoriteMusicians");
-  
+  return knex.schema.dropTableIfExists("drawingsTable");
 };
