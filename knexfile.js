@@ -4,9 +4,11 @@ module.exports = {
 
   development: {
     client: 'pg',
-    connection: {
-      filename: './database/dev.pg'
-    },
+    connection: 'postgres://postgres:lptEvxnD3f18MTXsFi5G@localhost:5432/postgres',
+    // {
+    //   filename: './database/dev.pg'
+    //   
+    // },
     useNullAsDefault: true,
     // generates migration files in a data/migrations/ folder
     migrations: {
