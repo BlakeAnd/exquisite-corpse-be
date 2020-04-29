@@ -1,6 +1,8 @@
+const db = require("./database/dbConfig.js");
 
 module.exports = {
-  addDrawing
+  addDrawing,
+  getDrawing
 }
 
 function addDrawing(drawing) {
@@ -8,11 +10,10 @@ function addDrawing(drawing) {
     .insert(drawing)
 }
 
-function getDrawing(drawing_id, sub_canvas_id) {
+function getDrawing(drawing_id) {
   return db("drawingsTable")
-    .where({drawing_canvas: drawing_id, sub_canvas_num: sub_canvas_id})
+    .where({drawing_canvas: drawing_id})
     .select("drawingsTable.drawing_canvas", "drawingsTable.sub_canvas_id", "drawingsTable.image_data")
-    
 }
 
 

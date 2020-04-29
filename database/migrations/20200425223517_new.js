@@ -7,7 +7,7 @@ exports.up = function(knex) {
       .notNullable();
     tbl.json('image_data')
       .notNullable(); 
-    tbl.datetime('upload_time', { precision: 4 })
+    tbl.int('upload_time')
       .notNullable();
 }); 
 };
