@@ -6,12 +6,12 @@ module.exports = {
 }
 
 function addDrawing(drawing) {
-  return db("drawingsTable")
+  return db("drawings_table")
     .insert(drawing)
 }
 
 function getDrawing(drawing_id) {
-  return db("drawingsTable")
+  return db("drawings_table")
     .where({drawing_canvas: drawing_id})
     .select("drawingsTable.drawing_canvas", "drawingsTable.sub_canvas_id", "drawingsTable.image_data")
 }
