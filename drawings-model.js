@@ -13,7 +13,7 @@ function addDrawing(drawing) {
 function getDrawing(drawing_id) {
   return db("drawings_table")
     .where({drawing_canvas: drawing_id})
-    .select("drawingsTable.drawing_canvas", "drawingsTable.sub_canvas_id", "drawingsTable.image_data")
+    .select("drawings_table.drawing_canvas", "drawings_table.sub_canvas_id", "drawings_table.image_data")
 }
 
 

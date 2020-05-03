@@ -3,11 +3,11 @@ exports.up = function(knex) {
   .createTable("drawings_table", tbl => {
     tbl.string('drawing_canvas')
       .notNullable();
-    tbl.int('sub_canvas_num')
+    tbl.integer('sub_canvas_num')
       .notNullable();
     tbl.json('image_data')
       .notNullable(); 
-    tbl.int('upload_time')
+    tbl.integer('upload_time')
       .notNullable();
 }); 
 };

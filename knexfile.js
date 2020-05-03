@@ -1,10 +1,10 @@
 // Update with your config settings.
-
+require('dotenv').config();
 module.exports = {
 
   development: {
     client: 'pg',
-    connection: 'postgres://postgres:lptEvxnD3f18MTXsFi5G@localhost:5432/postgres',
+    connection: `postgres://postgres:${process.env.PG_KEY}@localhost:5432/postgres`,
     // {
     //   filename: './database/dev.pg'
     //   
