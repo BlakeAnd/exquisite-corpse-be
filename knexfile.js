@@ -5,6 +5,7 @@ module.exports = {
   development: {
     client: 'pg',
     connection: `postgres://postgres:${process.env.PG_KEY}@localhost:5432/postgres`,
+    searchPath: ['knex', 'public'],
     // {
     //   filename: './database/dev.pg'
     //   

@@ -27,28 +27,35 @@ server.get('/', (req, res) => {
 
 server.post('/drawings', (req, res) => {
   let drawings_obj = {};
-
-  let id = req.body.pair_id;
+  console.log(req.body.pair_id);
+  let sub_canvas_num = null;
+  if(req.body.selected_canvas === "top"){
+    sub_canvas_num = 0;
+  } else if (req.body.selected_canvas === "bottom"){
+    sub_canvas_num = 1;
+  }
+  let drawing_canvas = req.body.pair_id;
   let image_data = req.body.img_data;
-  let canvas = req.body.selected_canvas;
-  let time_sent = Math.floor(Date.now() / 1000);
+  
+  let upload_time = Math.floor(Date.now() / 1000);
+
   let drawing_obj = {
-    drawing_id: id,
-    sub_canvas_id: canvas,
+    drawing_canvas: drawing_canvas,
+    sub_canvas_num: sub_canvas_num,
     image_data: image_data,
-    time: time_sent
+    upload_time: upload_time
   }
 
   // let canvases_arr = [null, null];
 
   console.log("DATE", Math.floor(Date.now() / 1000));  
 
-  drawingsTable.addDrawing(drawings_obj)
+  drawingsTable.addDrawing(drawing_obj)
     .then(res => {
       res.status(200).json(res);
     })
     .catch(error => {
-      res.status(400).json(error);
+      res.status(400).json(error.message);
     })
   // drawingsTable.getDrawing(id)
   //   .then(res => {

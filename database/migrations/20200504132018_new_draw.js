@@ -1,6 +1,6 @@
 exports.up = function(knex) {
   return knex.schema
-  .createTable("drawings_table", tbl => {
+  .createTable("drawingss_table", tbl => {
     tbl.string('drawing_canvas')
       .notNullable();
     tbl.integer('sub_canvas_num')
