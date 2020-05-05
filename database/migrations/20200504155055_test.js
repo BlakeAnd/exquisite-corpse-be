@@ -1,6 +1,6 @@
 exports.up = function(knex) {
   return knex.schema
-  .createTable("drawingss_table", tbl => {
+  .createTable("drawings_table", tbl => {
     tbl.string('drawing_canvas')
       .notNullable();
     tbl.integer('sub_canvas_num')
@@ -13,5 +13,5 @@ exports.up = function(knex) {
 };
 
 exports.down = function(knex) {
-  return knex.schema.dropTableIfExists("drawingss_table");
+  return knex.schema.dropTableIfExists("drawings_table");
 };

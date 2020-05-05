@@ -51,10 +51,12 @@ server.post('/drawings', (req, res) => {
   console.log("DATE", Math.floor(Date.now() / 1000));  
 
   drawingsTable.addDrawing(drawing_obj)
-    .then(res => {
-      res.status(200).json(res);
+    .then(response => {
+      // console.log("RES: ", res);
+      res.status(200).json(response);
     })
     .catch(error => {
+      // console.log("ERR: ", error);
       res.status(400).json(error.message);
     })
   // drawingsTable.getDrawing(id)
