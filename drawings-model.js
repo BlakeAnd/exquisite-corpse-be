@@ -6,15 +6,15 @@ module.exports = {
 }
 
 function addDrawing(drawing) {
-  console.log("loggg", drawing.sub_canvas_num, drawing.drawing_canvas, drawing.upload_time)
+   console.log("loggg", drawing.sub_canvas_num, drawing.drawing_canvas, drawing.upload_time)
   // console.log("log", drawing)
   return db("drawings_table")
     .insert(drawing)
 }
 
-function getDrawing(drawing_id) {
+function getDrawing(drawing_canvas) {
   return db("drawings_table")
-    .where({drawing_canvas: drawing_id})
+    .where({drawing_canvas: drawing_canvas})
     .select(drawings_table.drawing_canvas, drawings_table.sub_canvas_id, drawings_table.image_data)
 }
 

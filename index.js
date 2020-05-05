@@ -42,7 +42,7 @@ server.post('/drawings', (req, res) => {
   let drawing_obj = {
     drawing_canvas: drawing_canvas,
     sub_canvas_num: sub_canvas_num,
-    image_data: image_data,
+    // image_data: image_data,
     upload_time: upload_time
   }
 
@@ -53,20 +53,25 @@ server.post('/drawings', (req, res) => {
   drawingsTable.addDrawing(drawing_obj)
     .then(response => {
       // console.log("RES: ", res);
-      res.status(200).json(response);
+      console.log("no err")
+      drawingsTable.getDrawing(drawing_canvas)
+        .then(got => {
+          console.log("get res", got.drawing_canvas);
+          // res.status(200).json(resp);
+        })
+        .catch(error => {
+          // drawingsTable.addDrawing()
+          console.log("get err")
+          // res.status(400).json(error.message);
+        })
+      // res.status(200).json(response);
     })
     .catch(error => {
-      // console.log("ERR: ", error);
+      console.log("add err");
       res.status(400).json(error.message);
+
     })
-  // drawingsTable.getDrawing(id)
-  //   .then(res => {
-  //     res.status(200).json(res);
-  //   })
-  //   .catch(error => {
-  //     // drawingsTable.addDrawing()
-  //     res.status(400).json(error);
-  //   })
+
 
 
 
