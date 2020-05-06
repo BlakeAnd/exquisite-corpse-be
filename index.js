@@ -42,7 +42,7 @@ server.post('/drawings', (req, res) => {
   let drawing_obj = {
     drawing_canvas: drawing_canvas,
     sub_canvas_num: sub_canvas_num,
-    // image_data: image_data,
+    image_data: image_data,
     upload_time: upload_time
   }
 
@@ -54,15 +54,16 @@ server.post('/drawings', (req, res) => {
     .then(response => {
       // console.log("RES: ", res);
       console.log("no err")
+
       drawingsTable.getDrawing(drawing_canvas)
         .then(got => {
-          console.log("get res", got.drawing_canvas);
-          // res.status(200).json(resp);
+          // console.log("get res", got.drawing_canvas);
+          res.status(200).json(got);
         })
         .catch(error => {
-          // drawingsTable.addDrawing()
+          // drawingsTsable.addDrawing()
           console.log("get err")
-          // res.status(400).json(error.message);
+          res.status(400).json(error.message);
         })
       // res.status(200).json(response);
     })
@@ -71,12 +72,6 @@ server.post('/drawings', (req, res) => {
       res.status(400).json(error.message);
 
     })
-
-
-
-
-
-
   // if(drawings_obj.id === undefined){
   //   drawings_obj.id = canvases_arr;
   //   if(canvas === "top"){
@@ -111,6 +106,21 @@ server.post('/drawings', (req, res) => {
   // // res.send(req.body);
 })
 
+
+server.get('/drawings', (req, res) => {
+  let search_id = req.body.pair_id;
+
+  drawingsTable.getDrawing(search_id)
+  .then(got => {
+    // console.log("get res", got.drawing_canvas);
+    res.status(200).json(got);
+  })
+  .catch(error => {
+    // drawingsTable.addDrawing()
+    console.log("get err")
+    res.status(400).json(error.message);
+  })
+})
 
 
 // watch for connections on port 5000
