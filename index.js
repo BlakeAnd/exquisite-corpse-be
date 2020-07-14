@@ -50,28 +50,48 @@ server.post('/drawings', (req, res) => {
 
   console.log("DATE", Math.floor(Date.now() / 1000));  
 
-  drawingsTable.addDrawing(drawing_obj)
-    .then(response => {
-      // console.log("RES: ", res);
-      console.log("no err")
+  drawingsTable.getDrawing(drawing_canvas)
+  .then(got => {
+    // console.log("get res", got.drawing_canvas);
+    console.log("get 1 res")
+    if(got.length === 0){
+      drawingsTable.addDrawing(drawing_obj)
+      .then(response => {
+          // console.log("RES: ", res);
+          //console.log("no err")
 
-      drawingsTable.getDrawing(drawing_canvas)
-        .then(got => {
-          // console.log("get res", got.drawing_canvas);
-          res.status(200).json(got);
+          drawingsTable.getDrawing(drawing_canvas)
+            .then(got => {
+              // console.log("get res", got.drawing_canvas);
+              console.log("get 2 res")
+              res.status(200).json(got);
+            })
+            .catch(error => {
+              // drawingsTsable.addDrawing()
+              console.log("get 2 err")
+              res.status(400).json(error.message);
+            })
+          // res.status(200).json(response);
         })
-        .catch(error => {
-          // drawingsTsable.addDrawing()
-          console.log("get err")
-          res.status(400).json(error.message);
-        })
-      // res.status(200).json(response);
-    })
-    .catch(error => {
-      console.log("add err");
-      res.status(400).json(error.message);
+      .catch(error => {
+        console.log("add err");
+        res.status(400).json(error.message);
 
-    })
+      })
+    }
+    else{
+      //add logic for combining image data and returning new image
+      res.status(200).json(got);
+    }
+  })
+  .catch(error => {
+    // drawingsTsable.addDrawing()
+    console.log("get 1 err") 
+    res.status(400).json(error.message);
+  })
+
+
+
   // if(drawings_obj.id === undefined){
   //   drawings_obj.id = canvases_arr;
   //   if(canvas === "top"){
