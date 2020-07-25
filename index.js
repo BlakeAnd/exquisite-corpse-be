@@ -54,6 +54,8 @@ server.post('/drawings', (req, res) => {
   .then(got => {
     // console.log("get res", got.drawing_canvas);
     console.log("get 1 res")
+    
+    //if drawing returns length 0 that means there is no drawing stored in the DB, so we add it
     if(got.length === 0){
       drawingsTable.addDrawing(drawing_obj)
       .then(response => {
@@ -81,6 +83,18 @@ server.post('/drawings', (req, res) => {
     }
     else{
       //add logic for combining image data and returning new image
+        
+      // console.log("got:", got);
+      console.log("got:", got[0].image_data.data);
+      console.log("drawobj:", drawing_obj.image_data.data);
+      // got[0].image_data.data = got[0].image_data.data + drawing_obj.image_data.data;
+      for(const key in drawing_obj.image_data.data){
+        console.log("::", typeof(key), drawing_obj.image_data.data[key])
+        let size = Object.keys(got[0].image_data.data).length;
+        let key_num = parseInt(key)+size;
+        got[0].image_data.data[`${key_num}`] = drawing_obj.image_data.data[key];
+      }
+      console.log("got combined:", got[0]);
       res.status(200).json(got);
     }
   })
