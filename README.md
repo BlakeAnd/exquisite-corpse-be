@@ -3,6 +3,11 @@ this is the back end for exquisite corpse drawing funtime game
 enjoy
  
 
+ features
+ -block repeat sends from the same canvas from generating an image
+ -clear old entries from the database once a day
+ 
+
 ~
 logics
 there are multiple canvases per drawing

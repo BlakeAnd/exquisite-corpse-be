@@ -54,6 +54,7 @@ server.post('/drawings', (req, res) => {
   .then(got => {
     // console.log("get res", got.drawing_canvas);
     console.log("get 1 res")
+
     
     //if drawing returns length 0 that means there is no drawing stored in the DB, so we add it
     if(got.length === 0){
@@ -81,26 +82,39 @@ server.post('/drawings', (req, res) => {
 
       })
     }
-    else{
+    else if(drawing_obj.sub_canvas_num != got[0].sub_canvas_num){
       //add logic for combining image data and returning new image
-        
+      console.log("diff canvases:", drawing_obj.sub_canvas_num, got[0].sub_canvas_num);
       // console.log("got:", got);
       // console.log("got:", got[0].image_data.data);
       // console.log("drawobj:", drawing_obj.image_data.data);
-      // got[0].image_data.data = got[0].image_data.data + drawing_obj.image_data.data;
-      for(const key in drawing_obj.image_data.data){
-        // console.log("::", key, drawing_obj.image_data.data[key])
-        let size = Object.keys(got[0].image_data.data).length;
+      // got[0].image_data.data = got[0].image_data.data + drawing_obj.image_data.data;'
+      console.log("combining");
+      let top = null;
+      let bottom = null;
+      if(drawing_obj.sub_canvas_num === 1){
+        bottom = drawing_obj.image_data.data;
+        top = got[0].image_data.data;
+      }
+      else{ 
+        top = drawing_obj.image_data.data;
+        bottom = got[0].image_data.data;
+      }
+      let size = Object.keys(got[0].image_data.data).length;
+      for(const key in bottom){
         let key_num = parseInt(key)+size;
-        got[0].image_data.data[`${key_num}`] = drawing_obj.image_data.data[key];
+        top[`${key_num}`] = bottom[key];
       }
       let data_array = [];
-      for(const key in got[0].image_data.data){
-        data_array.push(got[0].image_data.data[key]);
+      for(const key in top){
+        data_array.push(top[key]);
       }
       got[0].image_data.data = data_array;
-      // console.log("got combined:", got[0]);
       res.status(200).json(got);
+    }
+    else{
+      console.log("same canvases:", drawing_obj.sub_canvas_num, got[0].sub_canvas_num);
+      res.status(200).json("nope");
     }
   })
   .catch(error => {
