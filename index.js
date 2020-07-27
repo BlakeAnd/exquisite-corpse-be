@@ -16,7 +16,7 @@ server.use(helmet());
 server.use(express.json({limit: '20MB'}));
 
 server.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "http://localhost:3000", "https://drawexquisitecorpse.netlify.app", "https://drawexquisitecorpse.netlify.com");
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000, https://drawexquisitecorpse.netlify.app/, https://drawexquisitecorpse.netlify.com");
   next();
 });
 
