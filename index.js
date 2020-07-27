@@ -20,6 +20,7 @@ server.use((req, res, next) => {
   next();
 });
 
+server.options("*", cors());
 // handle requests to the root of the api, the / route
 server.get('/', (req, res) => {
   res.send('Hello from EC BE');
