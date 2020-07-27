@@ -10,10 +10,15 @@ require("dotenv").config();
 
 const server = express(); // creates the server
 
-server.use(cors());
+server.use(cors(corsOptions));
 server.use(helmet());
 // server.use(bodyParser());
 server.use(express.json({limit: '20MB'}));
+
+var corsOptions = {
+  origin: 'https://drawexquisitecorpse.netlify.app',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
 
 // server.use(function(req, res, next) {
 //   var allowedOrigins = ['http://localhost:3000', 'https://drawexquisitecorpse.netlify.app'];
@@ -22,12 +27,12 @@ server.use(express.json({limit: '20MB'}));
 //        res.setHeader('Access-Control-Allow-Origin', origin);
 //   }
 
-server.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "https://drawexquisitecorpse.netlify.app" );
-  next();
-});
+// server.use((req, res, next) => {
+//   res.header("Access-Control-Allow-Origin", "https://drawexquisitecorpse.netlify.app" );
+//   next();
+// });
 
-// server.options("*", cors());
+server.options("*", cors());
 
 
 // handle requests to the root of the api, the / route
