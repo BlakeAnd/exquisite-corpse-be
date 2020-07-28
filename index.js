@@ -137,7 +137,7 @@ server.post('/drawings', (req, res) => {
   .catch(error => {
     // drawingsTsable.addDrawing()
     console.log("get 1 err") 
-    res.status(400).json(error.message);
+    res.status(400).json(error);
   })
 
 
