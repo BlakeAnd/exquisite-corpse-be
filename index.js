@@ -142,23 +142,22 @@ server.post('/drawings', (req, res) => {
         // console.log("RES: ", res);
         //console.log("no err")
 
-        drawingsTable.getDrawing(drawing_canvas)
-          .then(got => {
-            // console.log("get res", got.drawing_canvas);
-            console.log("get 2 res")
-            res.status(200).json(got);
-          })
-          .catch(error => {
-            // drawingsTsable.addDrawing()
-            console.log("get 2 err")
-            res.status(400).json(error.message);
-          })
-        // res.status(200).json(response);
+        // drawingsTable.getDrawing(drawing_canvas)
+        //   .then(got => {
+        //     // console.log("get res", got.drawing_canvas);
+        //     console.log("get 2 res")
+        //     res.status(200).json(got);
+        //   })
+        //   .catch(error => {
+        //     // drawingsTsable.addDrawing()
+        //     console.log("get 2 err")
+        //     res.status(400).json(error.message);
+        //   })
+        res.status(200).json(response);
       })
     .catch(error => {
       console.log("add err");
       res.status(400).json(error.message);
-
     })
 
     // console.log("get 1 err") 
