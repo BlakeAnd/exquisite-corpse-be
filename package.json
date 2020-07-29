@@ -22,7 +22,8 @@
     "express": "^4.17.1",
     "helmet": "^3.22.0",
     "knex": "^0.20.13",
-    "pg": "^8.3.0"
+    "pg": "^8.3.0",
+    "psql": "0.0.1"
   },
   "devDependencies": {},
   "description": ""
