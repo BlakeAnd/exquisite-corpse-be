@@ -153,7 +153,8 @@ server.post('/drawings', (req, res) => {
         //     console.log("get 2 err")
         //     res.status(400).json(error.message);
         //   })
-        res.status(200).json(response);
+        // res.status(200).json(response);
+        res.send(response);
       })
     .catch(error => {
       console.log("add err");
