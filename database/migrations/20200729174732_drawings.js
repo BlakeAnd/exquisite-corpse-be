@@ -13,5 +13,6 @@ exports.up = function(knex) {
 };
 
 exports.down = function(knex) {
-  return knex.schema.dropTableIfExists(drawings_table);
+  return knex.schema.dropTableIfExists("drawings_table");
 };
+

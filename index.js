@@ -43,7 +43,7 @@ server.get('/', (req, res) => {
 });
 
 server.post('/drawings', (req, res) => {
-  let drawings_obj = {};
+  // let drawings_obj = {};
   console.log(req.body.pair_id);
   let sub_canvas_num = null;
   if(req.body.selected_canvas === "top"){
@@ -71,7 +71,7 @@ server.post('/drawings', (req, res) => {
   .then(got => {
     // console.log("get res", got.drawing_canvas);
     console.log("get 1 res")
-    res.status(200).json("ok");
+    // res.status(200).json("ok");
     
     //if drawing returns length 0 that means there is no drawing stored in the DB, so we add it
     if(got.length === 0){
@@ -94,7 +94,7 @@ server.post('/drawings', (req, res) => {
           // res.status(200).json(response);
         })
       .catch(error => {
-        console.log("add err");
+        console.log("add og err");
         res.status(400).json(error.message);
 
       })
@@ -137,32 +137,34 @@ server.post('/drawings', (req, res) => {
   .catch(error => {
     // drawingsTsable.addDrawing()
 
-    drawingsTable.addDrawing(drawing_obj)
-    .then(response => {
-        // console.log("RES: ", res);
-        //console.log("no err")
+    // drawingsTable.addDrawing(drawing_obj)
+    // .then(response => {
+    //     // console.log("RES: ", res);
+    //     //console.log("no err")
 
-        // drawingsTable.getDrawing(drawing_canvas)
-        //   .then(got => {
-        //     // console.log("get res", got.drawing_canvas);
-        //     console.log("get 2 res")
-        //     res.status(200).json(got);
-        //   })
-        //   .catch(error => {
-        //     // drawingsTsable.addDrawing()
-        //     console.log("get 2 err")
-        //     res.status(400).json(error.message);
-        //   })
-        // res.status(200).json(response);
-        res.send(response);
-      })
-    .catch(error => {
-      console.log("add err");
-      res.status(400).json(error.message);
-    })
+    //     // drawingsTable.getDrawing(drawing_canvas)
+    //     //   .then(got => {
+    //     //     // console.log("get res", got.drawing_canvas);
+    //     //     console.log("get 2 res")
+    //     //     res.status(200).json(got);
+    //     //   })
+    //     //   .catch(error => {
+    //     //     // drawingsTsable.addDrawing()
+    //     //     console.log("get 2 err")
+    //     //     res.status(400).json(error.message);
+    //     //   })
+    //     console.log("okkokokok")
+    //     res.status(200).json(response);
+    //   })
+    // .catch(error => {
+    //   console.log("add new err");
+    //   console.log(error);
+    //   console.log(error.message);
+    //   res.status(400).json(error.message);
+    // })
 
-    // console.log("get 1 err") 
-    // res.status(400).json(error);
+    console.log("get 1 err") 
+    res.status(400).json(error);
   })
 
 
