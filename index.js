@@ -164,6 +164,8 @@ server.post('/drawings', (req, res) => {
     // })
 
     console.log("get 1 err") 
+    console.log(error) 
+    console.log(error.message) 
     res.status(400).json(error);
   })
 
