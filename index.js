@@ -30,7 +30,8 @@ server.use(express.json({limit: '20MB'}));
 //   }
 
 server.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "https://drawexquisitecorpse.netlify.app" );
+  res.header("Access-Control-Allow-Origin", "*");
+  // "https://drawexquisitecorpse.netlify.app"
   next();
 });
 
@@ -51,6 +52,7 @@ server.post('/drawings', (req, res) => {
   } else if (req.body.selected_canvas === "bottom"){
     sub_canvas_num = 1;
   }
+  console.log("revieved", req.body);
   let drawing_canvas = req.body.pair_id;
   let image_data = req.body.img_data;
   
@@ -126,12 +128,14 @@ server.post('/drawings', (req, res) => {
       for(const key in top){
         data_array.push(top[key]);
       }
+      console.log("old length", got[0].image_data.data.length);
       got[0].image_data.data = data_array;
+      console.log("new length", got[0].image_data.data.length);
       res.status(200).json(got);
     }
     else{
       console.log("same canvases:", drawing_obj.sub_canvas_num, got[0].sub_canvas_num);
-      res.status(400).json("nope");
+      res.status(400).json(res);
     }
   })
   .catch(error => {
