@@ -52,7 +52,7 @@ server.post('/drawings', (req, res) => {
   } else if (req.body.selected_canvas === "bottom"){
     sub_canvas_num = 1;
   }
-  console.log("revieved", req.body);
+  // console.log("revieved", req.body);
   let drawing_canvas = req.body.pair_id;
   let image_data = req.body.img_data;
   
@@ -79,9 +79,8 @@ server.post('/drawings', (req, res) => {
     if(got.length === 0){
       drawingsTable.addDrawing(drawing_obj)
       .then(response => {
-          // console.log("RES: ", res);
-          //console.log("no err")
-
+          console.log("RES: ", res);
+          console.log("no err")
           drawingsTable.getDrawing(drawing_canvas)
             .then(got => {
               // console.log("get res", got.drawing_canvas);
@@ -97,6 +96,8 @@ server.post('/drawings', (req, res) => {
         })
       .catch(error => {
         console.log("add og err");
+        console.log(error);
+        console.log(error.message);
         res.status(400).json(error.message);
 
       })
@@ -105,37 +106,19 @@ server.post('/drawings', (req, res) => {
       //add logic for combining image data and returning new image
       console.log("diff canvases:", drawing_obj.sub_canvas_num, got[0].sub_canvas_num);
       // console.log("got:", got);
-      // console.log("got:", got[0].image_data.data);
-      // console.log("drawobj:", drawing_obj.image_data.data);
-      // got[0].image_data.data = got[0].image_data.data + drawing_obj.image_data.data;'
-      console.log("combining");
-      let top = null;
-      let bottom = null;
-      if(drawing_obj.sub_canvas_num === 1){
-        bottom = drawing_obj.image_data.data;
-        top = got[0].image_data.data;
-      }
-      else{ 
-        top = drawing_obj.image_data.data;
-        bottom = got[0].image_data.data;
-      }
-      let size = Object.keys(got[0].image_data.data).length;
-      for(const key in bottom){
-        let key_num = parseInt(key)+size;
-        top[`${key_num}`] = bottom[key];
-      }
-      let data_array = [];
-      for(const key in top){
-        data_array.push(top[key]);
-      }
-      console.log("old length", got[0].image_data.data.length);
-      got[0].image_data.data = data_array;
-      console.log("new length", got[0].image_data.data.length);
+      // console.log("got:", got[0].image_data);
+      // console.log("drawobj:", drawing_obj.image_data);
+      console.log("got length:", got[0].image_data.length);
+      let new_arr = [];
+      new_arr = got[0].image_data.concat(drawing_obj.image_data);
+      got[0].image_data = new_arr;
+      console.log("got merged length:", got[0].image_data.length);
+      // console.log("got merged:", got[0].image_data);
       res.status(200).json(got);
     }
     else{
       console.log("same canvases:", drawing_obj.sub_canvas_num, got[0].sub_canvas_num);
-      res.status(400).json(res);
+      res.status(400).json(error);
     }
   })
   .catch(error => {

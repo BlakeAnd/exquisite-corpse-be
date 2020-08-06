@@ -5,7 +5,7 @@ exports.up = function(knex) {
       .notNullable();
     tbl.integer('sub_canvas_num')
       .notNullable();
-    tbl.json('image_data')
+    tbl.specificType('image_data', 'jsonb[]')
       .notNullable(); 
     tbl.integer('upload_time')
       .notNullable();
