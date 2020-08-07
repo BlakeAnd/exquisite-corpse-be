@@ -7,6 +7,8 @@ exports.up = function(knex) {
       .notNullable();
     tbl.specificType('image_data', 'jsonb[]')
       .notNullable(); 
+    tbl.string('merge_string')
+      .notNullable();
     tbl.integer('upload_time')
       .notNullable();
 }); 

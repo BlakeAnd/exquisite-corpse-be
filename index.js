@@ -59,6 +59,7 @@ server.post('/drawings', (req, res) => {
   let upload_time = Math.floor(Date.now() / 1000);
 
   let drawing_obj = {
+    merge_string: `${sub_canvas_num}`,
     drawing_canvas: drawing_canvas,
     sub_canvas_num: sub_canvas_num,
     image_data: image_data,
@@ -105,20 +106,26 @@ server.post('/drawings', (req, res) => {
     else if(drawing_obj.sub_canvas_num != got[0].sub_canvas_num){
       //add logic for combining image data and returning new image
       console.log("diff canvases:", drawing_obj.sub_canvas_num, got[0].sub_canvas_num);
-      // console.log("got:", got);
+      console.log("got:", got);
       // console.log("got:", got[0].image_data);
       // console.log("drawobj:", drawing_obj.image_data);
       console.log("got length:", got[0].image_data.length);
       let new_arr = [];
       new_arr = got[0].image_data.concat(drawing_obj.image_data);
       got[0].image_data = new_arr;
+      if(got[0].merge_string.length === 1){
+        got[0].merge_string += `${sub_canvas_num}`;
+      }
       console.log("got merged length:", got[0].image_data.length);
       // console.log("got merged:", got[0].image_data);
       res.status(200).json(got);
     }
+    else if(got[0].merge_string.length === 2){
+      // console.log("same canvases:", drawing_obj.sub_canvas_num, got[0].sub_canvas_num);
+      res.status(200).json(got);
+    }
     else{
-      console.log("same canvases:", drawing_obj.sub_canvas_num, got[0].sub_canvas_num);
-      res.status(400).json(error);
+      res.status(400).json(got);
     }
   })
   .catch(error => {
