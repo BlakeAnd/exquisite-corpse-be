@@ -30,8 +30,8 @@ server.use(express.json({limit: '20MB'}));
 //   }
 
 server.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  // "https://drawexquisitecorpse.netlify.app"
+  res.header("Access-Control-Allow-Origin", null, "null", "file:///C:/Users/Blake/Documents/Git/ExquisiteCorpseProject/ExquisiteCorpse/remotedraw.html", "*");
+  // "https://drawexquisitecorpse.netlify.app"  
   next();
 });
 
@@ -80,7 +80,7 @@ server.post('/drawings', (req, res) => {
     if(got.length === 0){
       drawingsTable.addDrawing(drawing_obj)
       .then(response => {
-          console.log("RES: ", res);
+          // console.log("RES: ", res);
           console.log("no err")
           drawingsTable.getDrawing(drawing_canvas)
             .then(got => {
@@ -97,8 +97,8 @@ server.post('/drawings', (req, res) => {
         })
       .catch(error => {
         console.log("add og err");
-        console.log(error);
-        console.log(error.message);
+        // console.log(error);
+        // console.log(error.message);
         res.status(400).json(error.message);
 
       })
@@ -106,7 +106,7 @@ server.post('/drawings', (req, res) => {
     else if(drawing_obj.sub_canvas_num != got[0].sub_canvas_num){
       //add logic for combining image data and returning new image
       console.log("diff canvases:", drawing_obj.sub_canvas_num, got[0].sub_canvas_num);
-      console.log("got:", got);
+      console.log("got");
       // console.log("got:", got[0].image_data);
       // console.log("drawobj:", drawing_obj.image_data);
       console.log("got length:", got[0].image_data.length);
@@ -116,6 +116,32 @@ server.post('/drawings', (req, res) => {
       if(got[0].merge_string.length === 1){
         got[0].merge_string += `${sub_canvas_num}`;
       }
+      let merge_string = got[0].merge_string;
+      console.log("b4 obj", drawing_canvas, merge_string);
+      // let merge_obj = {
+      //   drawing_canvas: drawing_canvas,
+      //   merge_string: merge_string
+      // }
+
+      console.log("just before the mrge")
+      drawingsTable.updateMerge(drawing_canvas, merge_string, new_arr)
+        .then(responso => {
+          console.log("update merge:", responso)
+          // drawingsTable.getDrawing(drawing_canvas)
+          // .then(got => {
+          //   // console.log("get res", got.drawing_canvas);
+          //   console.log("get 2 res")
+          //   res.status(200).json(got);
+          // })
+          // .catch(error => {
+          //   // drawingsTsable.addDrawing()
+          //   console.log("get 2 err")
+          //   res.status(400).json(error.message);
+          // })
+        })
+        .catch(err =>{
+          console.log("update merge err", err)
+        })
       console.log("got merged length:", got[0].image_data.length);
       // console.log("got merged:", got[0].image_data);
       res.status(200).json(got);
@@ -158,8 +184,8 @@ server.post('/drawings', (req, res) => {
     // })
 
     console.log("get 1 err") 
-    console.log(error) 
-    console.log(error.message) 
+    // console.log(error) 
+    // console.log(error.message) 
     res.status(400).json(error);
   })
 
@@ -200,17 +226,19 @@ server.post('/drawings', (req, res) => {
 })
 
 
-server.get('/drawings', (req, res) => {
-  let search_id = req.body.pair_id;
+server.get('/drawings/:pair_id', (req, res) => {
+  // console.log("params:", req.params.pair_id);
+  let search_id = req.params.pair_id;
 
   drawingsTable.getDrawing(search_id)
   .then(got => {
-    console.log("get res");
+    console.log("pinged get res", search_id);
     res.status(200).json(got);
   })
   .catch(error => {
     // drawingsTable.addDrawing()
-    console.log("get err")
+    console.log("pinged get err")
+    // console.log("get err", error.message);
     res.status(400).json(error.message);
   })
 })
