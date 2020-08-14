@@ -111,7 +111,12 @@ server.post('/drawings', (req, res) => {
       // console.log("drawobj:", drawing_obj.image_data);
       console.log("got length:", got[0].image_data.length);
       let new_arr = [];
-      new_arr = got[0].image_data.concat(drawing_obj.image_data);
+      if(got[0].sub_canvas_num === 0){
+        new_arr = got[0].image_data.concat(drawing_obj.image_data);
+      }
+      else if(got[0].sub_canvas_num === 1){
+        new_arr = drawing_obj.image_data.concat(got[0].image_data);
+      }
       got[0].image_data = new_arr;
       if(got[0].merge_string.length === 1){
         got[0].merge_string += `${sub_canvas_num}`;
