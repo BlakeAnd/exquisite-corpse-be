@@ -3,7 +3,8 @@ const db = require("./database/dbConfig.js");
 module.exports = {
   addDrawing,
   getDrawing,
-  updateMerge
+  updateMerge,
+  getID
 }
 
 function addDrawing(drawing) {
@@ -21,13 +22,20 @@ function getDrawing(drawing_canvas) {
 }
 
 function updateMerge(drawing_canvas, merge_string, image_data){
-  console.log("hit merge", drawing_canvas, merge_string)
+  // console.log("hit merge", drawing_canvas, merge_string)
   return db("drawings_table")
     .where({drawing_canvas: drawing_canvas})
     .update({
       merge_string: merge_string,
       image_data: image_data
     })
+}
+
+function getID (drawing_canvas) {
+  console.log("check check", drawing_canvas)
+  return db("drawings_table")
+    // .where({drawing_canvas: drawing_canvas})
+    .select("drawings_table.drawing_canvas")
 }
 
   // function findForUser({id}) {

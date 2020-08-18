@@ -248,9 +248,26 @@ server.get('/drawings/:pair_id', (req, res) => {
   })
 })
 
+server.get('/every_canvas_ID', (req, res) => {
+  console.log("params:", req.params.pair_id);
+  let search_id = req.params.pair_id;
+
+  drawingsTable.getID(search_id)
+  .then(got => {
+    // console.log("id check res", got);
+    res.status(200).json(got);
+  })
+  .catch(error => {
+    // drawingsTable.addDrawing()
+    console.log("id check err")
+    console.log("err", error.message);
+    res.status(400).json(error.message);
+  })
+})
 
 // watch for connections on port 5000
 const port = process.env.PORT || 5000;
 server.listen(port, () =>
   console.log('Server running')
 );
+
