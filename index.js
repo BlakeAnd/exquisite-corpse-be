@@ -249,9 +249,6 @@ server.get('/drawings/:pair_id', (req, res) => {
 })
 
 server.get('/every_canvas_ID', (req, res) => {
-  console.log("params:", req.params.pair_id);
-  let search_id = req.params.pair_id;
-
   drawingsTable.getID(search_id)
   .then(got => {
     // console.log("id check res", got);
