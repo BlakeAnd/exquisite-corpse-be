@@ -31,29 +31,11 @@ function updateMerge(drawing_canvas, merge_string, image_data){
     })
 }
 
-function getID (drawing_canvas) {
-  console.log("check check", drawing_canvas)
+function getID () {
+  // console.log("check check", drawing_canvas)
   return db("drawings_table")
     // .where({drawing_canvas: drawing_canvas})
     .select("drawings_table.drawing_canvas")
 }
 
-  // function findForUser({id}) {
-  //   //let id = {id};
-  //   return db("topAnimals")
-  //   .innerJoin("animals", "topAnimals.animal_id", "animals.id")
-  //   .where({ user_id: id})
-  //   .select("animals.animal_name", "topAnimals.id", "user_id")
-  // }
-  // function edit (user_id, id, animal_id) {
 
-  //   return db("topAnimals")
-  //   .where({user_id: user_id, id: id})
-  //   .update({animal_id: animal_id})
-  // }
-
-  // function remove (user_id, id) {
-  //   return db("topAnimals")
-  //   .where({user_id: user_id, id: id})
-  //   .del()
-  // }

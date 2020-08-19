@@ -1,6 +1,7 @@
 const express = require('express'); // import the express package
 const helmet = require('helmet');
 const drawingsTable = require("./drawings-model");
+const countTable = require("./count-model");
 const cors = require('cors');
 // const bodyParser = require('body-parser')
 require("dotenv").config();
@@ -249,7 +250,7 @@ server.get('/drawings/:pair_id', (req, res) => {
 })
 
 server.get('/every_canvas_ID', (req, res) => {
-  drawingsTable.getID(search_id)
+  drawingsTable.getID()
   .then(got => {
     // console.log("id check res", got);
     res.status(200).json(got);
@@ -259,6 +260,53 @@ server.get('/every_canvas_ID', (req, res) => {
     console.log("id check err")
     console.log("err", error.message);
     res.status(400).json(error.message);
+  })
+})
+
+server.put('/count', (req, res) => {
+  countTable.getCount()
+  .then(got => {
+    console.log("count res", got);
+    let count = got;
+    if(count.length === 0){
+      count = 1; 
+      countTable.addCount(count)
+      .then(res => {
+        // console.log("added count res", res)
+
+        countTable.getCount()
+          .then(got => { 
+            console.log("added:", got);
+          })
+          .catch(error => {
+            console.log("get count err 2")
+          })
+      })
+      .catch(err => {
+
+      })
+    }
+    else{
+      count ++;
+    console.log("countt", count);
+    countTable.updateCount(count)
+      .then(resp => {
+        console.log(resp)
+        countTable.getCount()
+          .then(got => { 
+            console.log("updated:", got);
+          })
+          .catch(error => {
+            console.log("get count err 2")
+          })
+      })
+      .catch(error => {
+        console.log("count update error", error);
+      })
+    }
+  })
+  .catch(error => {
+    console.log("count err", error);
   })
 })
 
