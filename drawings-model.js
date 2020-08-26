@@ -4,7 +4,8 @@ module.exports = {
   addDrawing,
   getDrawing,
   updateMerge,
-  getID
+  getID,
+  clearOldDrawings
 }
 
 function addDrawing(drawing) {
@@ -35,6 +36,13 @@ function getID () {
   // console.log("check check", drawing_canvas)
   return db("drawings_table")
     // .where({drawing_canvas: drawing_canvas})
+    .select("drawings_table.drawing_canvas")
+}
+
+function clearOldDrawings(cutoff_time){
+  return db("drawings_table")
+    .where({})
+    .andWhere('drawings_table.upload_time', '<', cutoff_time)
     .select("drawings_table.drawing_canvas")
 }
 

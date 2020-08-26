@@ -39,6 +39,24 @@ server.use((req, res, next) => {
 server.options("*", cors());
 
 
+setInterval(clear, 4320); //0000 runs code every 12 hours
+//calls db to remove old code
+function clear() {
+  let current_time = Math.floor(Date.now() / 1000); //timestamp in milliseconds
+  let cutoff = current_time - 86400000; //time stamp of 24 hours ago
+  // console.log(current_time);
+  drawingsTable.clearOldDrawings(cutoff)
+    .then(res => {
+      console.log("oldss", res)
+    })
+    .catch(err => {
+      
+    })
+}
+
+
+
+
 // handle requests to the root of the api, the / route
 server.get('/', (req, res) => {
   res.send('Hello from EC BE');
@@ -309,6 +327,8 @@ server.put('/count', (req, res) => {
     console.log("count err", error);
   })
 })
+
+
 
 // watch for connections on port 5000
 const port = process.env.PORT || 5000;
