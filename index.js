@@ -39,18 +39,18 @@ server.use((req, res, next) => {
 server.options("*", cors());
 
 
-setInterval(clear, 4320); //0000 runs code every 12 hours
+setInterval(clear, 7200000); // runs code every 2 hours
 //calls db to remove old code
 function clear() {
-  let current_time = Math.floor(Date.now() / 1000); //timestamp in milliseconds
-  let cutoff = current_time - 86400000; //time stamp of 24 hours ago
+  let current_time = Math.floor(Date.now() / 1000); //timestamp in seconds
+  let cutoff = current_time - 86400; // time stamp of 24 hours ago
   // console.log(current_time);
   drawingsTable.clearOldDrawings(cutoff)
     .then(res => {
-      console.log("oldss", res)
+      // console.log("oldss", res)
     })
     .catch(err => {
-      
+      console.log("clearing err:", err)
     })
 }
 

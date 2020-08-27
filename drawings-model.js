@@ -40,10 +40,10 @@ function getID () {
 }
 
 function clearOldDrawings(cutoff_time){
+  console.log(cutoff_time);
   return db("drawings_table")
-    .where({})
-    .andWhere('drawings_table.upload_time', '<', cutoff_time)
-    .select("drawings_table.drawing_canvas")
+    .where('upload_time', '<', cutoff_time)
+    .del()
 }
 
 
