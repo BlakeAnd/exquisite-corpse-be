@@ -207,7 +207,7 @@ server.post('/drawings', (req, res) => {
     //   res.status(400).json(error.message);
     // })
 
-    console.log("get 1 err") 
+    console.log("get 1 err" ) 
     console.log("g1", error) 
     console.log("g1", error.message) 
     res.status(400).json(error);
@@ -281,36 +281,35 @@ server.get('/every_canvas_ID', (req, res) => {
   })
 })
 
-server.put('/count', (req, res) => {
-  countTable.getCount()
+server.put('/count/:count_type', (req, res) => {
+  let count_type = req.params.count_type + "_counter";
+  countTable.getCount(count_type)
   .then(got => {
     console.log("count res", got);
     let count = got;
     if(count.length === 0){
       count = 1; 
-      countTable.addCount(count)
-      .then(res => {
-        // console.log("added count res", res)
-
-        countTable.getCount()
-          .then(got => { 
-            console.log("added:", got);
-          })
-          .catch(error => {
-            console.log("get count err 2")
-          })
-      })
-      .catch(err => {
-
-      })
+      countTable.updateCount(count, count_type)
+        .then(res => {
+          console.log("1st updated count res", res)
+          countTable.getCount(count_type)
+            .then(got => { 
+              console.log("added:", got);
+            })
+            .catch(error => {
+              console.log("get count err 2")
+            })
+        })
+        .catch(err => {
+        })
     }
     else{
       count ++;
-    console.log("countt", count);
-    countTable.updateCount(count)
+      console.log("countt", count);
+      countTable.updateCount(count, count_type)
       .then(resp => {
         console.log(resp)
-        countTable.getCount()
+        countTable.getCount(count_type)
           .then(got => { 
             console.log("updated:", got);
           })
