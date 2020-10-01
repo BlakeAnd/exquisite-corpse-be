@@ -39,7 +39,7 @@ server.use(function(req, res, next) {
   next();
 });
 
-// server.options("*", cors());
+server.options("*", cors());
 
 
 setInterval(clear, 7200000); // runs code every 2 hours
