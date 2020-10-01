@@ -31,12 +31,12 @@ server.use(express.json({limit: '20MB'}));
 //   }
 
 server.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", null, "null", "file:///C:/Users/Blake/Documents/Git/ExquisiteCorpseProject/ExquisiteCorpse/remotedraw.html", "*");
-  // "https://drawexquisitecorpse.netlify.app"  
+  res.header("Access-Control-Allow-Origin", null, "https://drawexquisitecorpse.netlify.app", "null", "file:///C:/Users/Blake/Documents/Git/ExquisiteCorpseProject/ExquisiteCorpse/remotedraw.html", "*");
+  //  
   next();
 });
 
-server.options("*", cors());
+server.options("https://drawexquisitecorpse.netlify.app", cors());
 
 
 setInterval(clear, 7200000); // runs code every 2 hours
