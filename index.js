@@ -11,12 +11,12 @@ require("dotenv").config();
 
 const server = express(); // creates the server
 
-// var corsOptions = {
-//   origin: 'https://drawexquisitecorpse.netlify.app',
-//   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-// }
+var corsOptions = {
+  origin: 'https://drawexquisitecorpse.netlify.app',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
 
-server.use(cors());
+server.use(cors(corsOptions);
 server.use(helmet());
 // server.use(bodyParser());
 server.use(express.json({limit: '20MB'}));
@@ -30,13 +30,13 @@ server.use(express.json({limit: '20MB'}));
 //        res.setHeader('Access-Control-Allow-Origin', origin);
 //   }
 
-server.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", null, "https://drawexquisitecorpse.netlify.app", "null", "file:///C:/Users/Blake/Documents/Git/ExquisiteCorpseProject/ExquisiteCorpse/remotedraw.html", "*");
-  //  
-  next();
-});
+// server.use((req, res, next) => {
+//   res.header("Access-Control-Allow-Origin", null, "https://drawexquisitecorpse.netlify.app", "null", "file:///C:/Users/Blake/Documents/Git/ExquisiteCorpseProject/ExquisiteCorpse/remotedraw.html", "*");
+//   //  
+//   next();
+// });
 
-server.options("https://drawexquisitecorpse.netlify.app", cors());
+// server.options("*", cors());
 
 
 setInterval(clear, 7200000); // runs code every 2 hours
