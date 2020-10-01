@@ -33,7 +33,7 @@ server.use(express.json({limit: '20MB'}));
 //   //  
 //   next();
 // });
-server.use(function(req, res, next) {
+server.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "null", null, "https://drawexquisitecorpse.netlify.app", "https://drawexquisitecorpse.netlify.app", "null", "file:///C:/Users/Blake/Documents/Git/ExquisiteCorpseProject/ExquisiteCorpse/remotedraw.html", "*"); // update to match the domain you will make the request from
   // res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
