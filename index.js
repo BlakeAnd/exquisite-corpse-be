@@ -7,7 +7,7 @@ const cors = require('cors');
 require("dotenv").config();
 
 
-
+// console.log("the drawings")
 
 const server = express(); // creates the server
 
@@ -31,12 +31,16 @@ server.use(express.json({limit: '20MB'}));
 //   }
 
 server.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", 'https://drawexquisitecorpse.netlify.app', null, "null", "file:///C:/Users/Blake/Documents/Git/ExquisiteCorpseProject/ExquisiteCorpse/remotedraw.html", "*");
+  res.header("Access-Control-Allow-Origin", 'https://drawexquisitecorpse.netlify.app', "file:///C:/Users/Blake/Documents/Git/ExquisiteCorpseProject/ExquisiteCorpse/remotedraw.html");
   // "https://drawexquisitecorpse.netlify.app"  
   next();
 });
 
 server.options("*", cors());
+
+server.listen(3000, '127.0.0.1', () => {
+  console.log('Server running at http://127.0.0.1:3000/');
+});
 
 
 setInterval(clear, 7200000); // runs code every 2 hours
@@ -65,53 +69,66 @@ server.get('/', (req, res) => {
 server.post('/drawings', (req, res) => {
   // let drawings_obj = {};
   console.log(req.body.pair_id);
-  let sub_canvas_num = null;
-  if(req.body.selected_canvas === "top"){
-    sub_canvas_num = 0;
-  } else if (req.body.selected_canvas === "bottom"){
-    sub_canvas_num = 1;
-  }
+  // let sub_canvas_num = null;
+  // if(req.body.selected_canvas === "top"){
+  //   sub_canvas_num = 0;
+  // } else if (req.body.selected_canvas === "bottom"){
+  //   sub_canvas_num = 1;
+  // }
   // console.log("revieved", req.body);
-  let drawing_canvas = req.body.pair_id;
+  let drawing_canvas = req.body.pair_id; 
   let image_data = req.body.img_data;
+
+  // let other_id = ""
+  // if(drawing_canvas.subString(6) === "top"){
+  //    other_id = drawing_canvas.subString(0,6) + "bottom"
+  // }
+  // else{
+  //   other_id = drawing_canvas.subString(0,6) + "top"
+  // }
+  // console.log("other", other_id)
+  
   
   let upload_time = Math.floor(Date.now() / 1000);
 
   let drawing_obj = {
-    merge_string: `${sub_canvas_num}`,
-    drawing_canvas: drawing_canvas,
-    sub_canvas_num: sub_canvas_num,
-    image_data: image_data,
-    upload_time: upload_time
+    // merge_string: `${sub_canvas_num}`, // stringified version of the canvas num because reasons
+    unique_id: drawing_canvas, // "unique" id shared by the two canvases
+    // sub_canvas_num: sub_canvas_num, // number determining which canvas is which
+    image_data: image_data, //da image data
+    upload_time: upload_time //da time
   }
 
   // let canvases_arr = [null, null];
 
   console.log("DATE", Math.floor(Date.now() / 1000));  
 
-  drawingsTable.getDrawing(drawing_canvas)
+  // drawingsTable.addDrawing(drawing_obj)
+
+  drawingsTable.getDrawing(drawing_obj.unique_id)
   .then(got => {
     // console.log("get res", got.drawing_canvas);
-    console.log("get 1 res")
+    console.log("get 1 res", got)
     // res.status(200).json("ok");
     
-    //if drawing returns length 0 that means there is no drawing stored in the DB, so we add it
+    // if drawing returns length 0 that means there is no drawing stored in the DB, so we add it, prevents double adds
     if(got.length === 0){
       drawingsTable.addDrawing(drawing_obj)
       .then(response => {
           // console.log("RES: ", res);
           console.log("no err")
-          drawingsTable.getDrawing(drawing_canvas)
-            .then(got => {
-              // console.log("get res", got.drawing_canvas);
-              console.log("get 2 res")
-              res.status(200).json(got);
-            })
-            .catch(error => {
-              // drawingsTsable.addDrawing()
-              console.log("get 2 err")
-              res.status(400).json(error.message);
-            })
+          res.status(200).json("drawing added!");
+          // drawingsTable.getDrawing(drawing_canvas)
+          //   .then(got => {
+          //     // console.log("get res", got.drawing_canvas);
+          //     console.log("get 2 res")
+          //     res.status(200).json(got);
+          //   })
+          //   .catch(error => {
+          //     // drawingsTsable.addDrawing()
+          //     console.log("get 2 err")
+          //     res.status(400).json(error.message);
+          //   })
           // res.status(200).json(response);
         })
       .catch(error => {
@@ -121,61 +138,64 @@ server.post('/drawings', (req, res) => {
         res.status(400).json(error.message);
 
       })
-    }
-    else if(drawing_obj.sub_canvas_num != got[0].sub_canvas_num){
-      //add logic for combining image data and returning new image
-      console.log("diff canvases:", drawing_obj.sub_canvas_num, got[0].sub_canvas_num);
-      console.log("got");
-      // console.log("got:", got[0].image_data);
-      // console.log("drawobj:", drawing_obj.image_data);
-      console.log("got length:", got[0].image_data.length);
-      let new_arr = [];
-      if(got[0].sub_canvas_num === 0){
-        new_arr = got[0].image_data.concat(drawing_obj.image_data);
-      }
-      else if(got[0].sub_canvas_num === 1){
-        new_arr = drawing_obj.image_data.concat(got[0].image_data);
-      }
-      got[0].image_data = new_arr;
-      if(got[0].merge_string.length === 1){
-        got[0].merge_string += `${sub_canvas_num}`;
-      }
-      let merge_string = got[0].merge_string;
-      console.log("b4 obj", drawing_canvas, merge_string);
-      // let merge_obj = {
-      //   drawing_canvas: drawing_canvas,
-      //   merge_string: merge_string
-      // }
+    } 
+    // // if drawing sent is not drawing that already exists in database, eg to avoid when someone has double submitted the top half of the drawing...
+    // else if(drawing_obj.sub_canvas_num != got[0].sub_canvas_num){ 
+    //   //add logic for combining image data and returning new image
+    //   console.log("diff canvases:", drawing_obj.sub_canvas_num, got[0].sub_canvas_num);
+    //   console.log("got");
+    //   // console.log("got:", got[0].image_data);
+    //   // console.log("drawobj:", drawing_obj.image_data);
+    //   console.log("got length:", got[0].image_data.length);
+    //   let new_arr = [];
+    //   //checks if canvas received is top, then combines in right order
+    //   if(got[0].sub_canvas_num === 0){
+    //     new_arr = got[0].image_data.concat(drawing_obj.image_data);
+    //   }
+    //   //checks if canvas is bottom and combines in other order
+    //   else if(got[0].sub_canvas_num === 1){
+    //     new_arr = drawing_obj.image_data.concat(got[0].image_data);
+    //   }
+    //   got[0].image_data = new_arr;
+    //   if(got[0].merge_string.length === 1){
+    //     got[0].merge_string += `${sub_canvas_num}`;
+    //   }
+    //   let merge_string = got[0].merge_string;
+    //   console.log("b4 obj", drawing_canvas, merge_string);
+    //   // let merge_obj = {
+    //   //   drawing_canvas: drawing_canvas,
+    //   //   merge_string: merge_string
+    //   // }
 
-      console.log("just before the mrge")
-      drawingsTable.updateMerge(drawing_canvas, merge_string, new_arr)
-        .then(responso => {
-          console.log("update merge:", responso)
-          // drawingsTable.getDrawing(drawing_canvas)
-          // .then(got => {
-          //   // console.log("get res", got.drawing_canvas);
-          //   console.log("get 2 res")
-          //   res.status(200).json(got);
-          // })
-          // .catch(error => {
-          //   // drawingsTsable.addDrawing()
-          //   console.log("get 2 err")
-          //   res.status(400).json(error.message);
-          // })
-        })
-        .catch(err =>{
-          console.log("update merge err", err)
-        })
-      console.log("got merged length:", got[0].image_data.length);
-      // console.log("got merged:", got[0].image_data);
-      res.status(200).json(got);
-    }
-    else if(got[0].merge_string.length === 2){
-      // console.log("same canvases:", drawing_obj.sub_canvas_num, got[0].sub_canvas_num);
-      res.status(200).json(got);
-    }
+    //   console.log("just before the mrge")
+    //   drawingsTable.updateMerge(drawing_canvas, merge_string, new_arr)
+    //     .then(responso => { 
+    //       console.log("update merge:", responso)
+    //       // drawingsTable.getDrawing(drawing_canvas)
+    //       // .then(got => {
+    //       //   // console.log("get res", got.drawing_canvas);
+    //       //   console.log("get 2 res")
+    //       //   res.status(200).json(got);
+    //       // })
+    //       // .catch(error => {
+    //       //   // drawingsTsable.addDrawing()
+    //       //   console.log("get 2 err")
+    //       //   res.status(400).json(error.message);
+    //       // })
+    //     })
+    //     .catch(err =>{
+    //       console.log("update merge err", err)
+    //     })
+    //   console.log("got merged length:", got[0].image_data.length);
+    //   // console.log("got merged:", got[0].image_data);
+    //   res.status(200).json(got);
+    // }
+    // else if(got[0].merge_string.length === 2){
+    //   // console.log("same canvases:", drawing_obj.sub_canvas_num, got[0].sub_canvas_num);
+    //   res.status(200).json(got);
+    // }
     else{
-      res.status(400).json(got);
+      res.status(200).json("drawing aready exists");
     }
   })
   .catch(error => {
@@ -183,20 +203,20 @@ server.post('/drawings', (req, res) => {
 
     // drawingsTable.addDrawing(drawing_obj)
     // .then(response => {
-    //     // console.log("RES: ", res);
-    //     //console.log("no err")
+    //     console.log("RES: ", res);
+    //     console.log("no err")
 
-    //     // drawingsTable.getDrawing(drawing_canvas)
-    //     //   .then(got => {
-    //     //     // console.log("get res", got.drawing_canvas);
-    //     //     console.log("get 2 res")
-    //     //     res.status(200).json(got);
-    //     //   })
-    //     //   .catch(error => {
-    //     //     // drawingsTsable.addDrawing()
-    //     //     console.log("get 2 err")
-    //     //     res.status(400).json(error.message);
-    //     //   })
+    //     drawingsTable.getDrawing(drawing_canvas)
+    //       .then(got => {
+    //         // console.log("get res", got.drawing_canvas);
+    //         console.log("get 2 res")
+    //         res.status(200).json(got);
+    //       })
+    //       .catch(error => {
+    //         // drawingsTsable.addDrawing()
+    //         console.log("get 2 err")
+    //         res.status(400).json(error.message);
+    //       })
     //     console.log("okkokokok")
     //     res.status(200).json(response);
     //   })
@@ -238,15 +258,15 @@ server.post('/drawings', (req, res) => {
   //   res.send(combined_image);
   // }
   // console.log("\n")
-  // // console.log("body", req.body); 
-  // // console.log("draw obj 0", typeof(drawings_obj.id[0])); 
-  // // console.log("draw obj 1", typeof(drawings_obj.id[1])); 
+  // console.log("body", req.body); 
+  // console.log("draw obj 0", typeof(drawings_obj.id[0])); 
+  // console.log("draw obj 1", typeof(drawings_obj.id[1])); 
   // console.log("id ", id);
-  // // console.log("obj.id", drawings_obj.id);
-  // // console.log("img data len", image_data);
-  // // console.log("canvas ", canvas);
-  // // console.log(`image_data: ${image_data}`);
-  // // res.send(req.body);
+  // console.log("obj.id", drawings_obj.id);
+  // console.log("img data len", image_data);
+  // console.log("canvas ", canvas);
+  // console.log(`image_data: ${image_data}`);
+  // res.send(req.body);
 })
 
 
@@ -256,7 +276,7 @@ server.get('/drawings/:pair_id', (req, res) => {
 
   drawingsTable.getDrawing(search_id)
   .then(got => {
-    console.log("pinged get res", search_id);
+    console.log("pinged get res", search_id, got);
     res.status(200).json(got);
   })
   .catch(error => {
@@ -266,6 +286,46 @@ server.get('/drawings/:pair_id', (req, res) => {
     res.status(400).json(error.message);
   })
 })
+
+server.get('/combined/:id', (req, res) => {
+  console.log("id recieved", req.params.id)
+  let top = `${req.params.id}top`
+  let bottom = `${req.params.id}bottom`
+
+      //   if(got[0].sub_canvas_num === 0){
+    //     new_arr = got[0].image_data.concat(drawing_obj.image_data);
+    //   }
+    //   //checks if canvas is bottom and combines in other order
+    //   else if(got[0].sub_canvas_num === 1){
+    //     new_arr = drawing_obj.image_data.concat(got[0].image_data);
+  drawingsTable.getDrawing(top)
+  .then(got => {
+    // console.log("top image response", got);
+    // res.status(200).json(got);
+    drawingsTable.getDrawing(bottom)
+    .then(gott => {
+      console.log("top image response", got);
+      console.log("botom image response", gott[0].image_data);
+
+      let combined_res = got[0].image_data.concat(gott[0].image_data);
+
+      res.status(200).json(combined_res);
+    })
+    .catch(error => {
+      // drawingsTable.addDrawing()
+      console.log("comvined err")
+      console.log("err", error.message);
+      res.status(400).json(error.message);
+    })
+  })
+  .catch(error => {
+    // drawingsTable.addDrawing()
+    console.log("combined err")
+    console.log("err", error.message);
+    res.status(400).json(error.message);
+  })
+})
+
 
 server.get('/every_canvas_ID', (req, res) => {
   drawingsTable.getID()

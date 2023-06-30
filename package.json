@@ -25,6 +25,8 @@
     "pg": "^8.3.0",
     "psql": "0.0.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  },
   "description": ""
 }

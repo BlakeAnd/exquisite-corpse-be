@@ -11,15 +11,15 @@ module.exports = {
 function addDrawing(drawing) {
   //  console.log("loggg", drawing.sub_canvas_num, drawing.drawing_canvas, drawing.upload_time)
   // console.log("log", drawing)
-  return db("drawings_table")
+  return db("unique_drawings_table")
     .insert(drawing)
 }
 
-function getDrawing(drawing_canvas) {
+function getDrawing(unique_id) {
   // console.log("getting")
-  return db("drawings_table")
-    .where({drawing_canvas: drawing_canvas})
-    .select("drawings_table.drawing_canvas", "drawings_table.sub_canvas_num", "drawings_table.image_data", "drawings_table.merge_string");
+  return db("unique_drawings_table")
+    .where({unique_id: unique_id})
+    .select("unique_drawings_table.unique_id", "unique_drawings_table.image_data");
 }
 
 function updateMerge(drawing_canvas, merge_string, image_data){
