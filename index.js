@@ -16,28 +16,37 @@ const server = express(); // creates the server
 //   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 // }
 
-server.use(cors());
-server.use(helmet());
-// server.use(bodyParser());
-server.use(express.json({limit: '20MB'}));
+  server.use(cors());
+  server.use(helmet());
+  // server.use(bodyParser());
+  server.use(express.json({limit: '20MB'}));
+
+  const corsOptions = {
+    origin: 'https://drawexquisitecorpse.netlify.app',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    preflightContinue: false,
+    optionsSuccessStatus: 204
+  };
+  
+  server.use(cors(corsOptions));
 
 
 
-// server.use(function(req, res, next) {
-//   var allowedOrigins = ['http://localhost:3000', 'https://drawexquisitecorpse.netlify.app'];
-//   var origin = req.headers.origin;
-//   if(allowedOrigins.indexOf(origin) > -1){
-//        res.setHeader('Access-Control-Allow-Origin', origin);
-//   }
+  // server.use(function(req, res, next) {
+  //   var allowedOrigins = ['http://localhost:3000', 'https://drawexquisitecorpse.netlify.app'];
+  //   var origin = req.headers.origin;
+  //   if(allowedOrigins.indexOf(origin) > -1){
+  //        res.setHeader('Access-Control-Allow-Origin', origin);
+  //   }
 
-server.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", 'https://drawexquisitecorpse.netlify.app');
-  // "https://drawexquisitecorpse.netlify.app"  
-  next();
-});
-// "file:///C:/Users/Blake/Documents/Git/ExquisiteCorpseProject/ExquisiteCorpse/remotedraw.html"
+  // server.use((req, res, next) => {
+  //   res.header("Access-Control-Allow-Origin", 'https://drawexquisitecorpse.netlify.app');
+  //   // "https://drawexquisitecorpse.netlify.app"  
+  //   next();
+  // });
+  // "file:///C:/Users/Blake/Documents/Git/ExquisiteCorpseProject/ExquisiteCorpse/remotedraw.html"
 
-server.options("*", cors());
+  server.options("*", cors());
 
 server.listen(3000, '127.0.0.1', () => {
   console.log('Server running at http://127.0.0.1:3000/');
