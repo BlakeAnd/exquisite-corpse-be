@@ -31,7 +31,7 @@ server.use(express.json({limit: '20MB'}));
 //   }
 
 server.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", 'https://drawexquisitecorpse.netlify.app', "file:///C:/Users/Blake/Documents/Git/ExquisiteCorpseProject/ExquisiteCorpse/remotedraw.html");
+  res.header("Access-Control-Allow-Origin", 'https://drawexquisitecorpse.netlify.app/remotedraw.html', "file:///C:/Users/Blake/Documents/Git/ExquisiteCorpseProject/ExquisiteCorpse/remotedraw.html");
   // "https://drawexquisitecorpse.netlify.app"  
   next();
 });
