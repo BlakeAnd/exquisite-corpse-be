@@ -25,18 +25,19 @@ server.enable('trust proxy');
 
 
 
-  // server.use(function(req, res, next) {
-  //   var allowedOrigins = ['http://localhost:3000', 'https://drawexquisitecorpse.netlify.app'];
-  //   var origin = req.headers.origin;
-  //   if(allowedOrigins.indexOf(origin) > -1){
-  //        res.setHeader('Access-Control-Allow-Origin', origin);
-  //   }
-
-  server.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", 'https://drawexquisitecorpse.netlify.app');
-    // "https://drawexquisitecorpse.netlify.app"  
-    next();
+  server.use(function(req, res, next) {
+    var allowedOrigins = ['https://drawexquisitecorpse.netlify.app'];
+    var origin = req.headers.origin;
+    if(allowedOrigins.indexOf(origin) > -1){
+         res.setHeader('Access-Control-Allow-Origin', origin);
+    }
   });
+
+  // server.use((req, res, next) => {
+  //   res.header("Access-Control-Allow-Origin", 'https://drawexquisitecorpse.netlify.app');
+  //   // "https://drawexquisitecorpse.netlify.app"  
+  //   next();
+  // });
   // "file:///C:/Users/Blake/Documents/Git/ExquisiteCorpseProject/ExquisiteCorpse/remotedraw.html"
 
   server.options("*", cors());
